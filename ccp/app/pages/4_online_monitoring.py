@@ -1191,8 +1191,8 @@ def main():
             if "accumulated_results" not in st.session_state:
                 st.session_state.accumulated_results = None
 
-            # First row: Start date, Start time, Start/Stop Monitoring button
-            control_row1 = st.columns([1, 1, 1, 1])
+            # First row: Start date, Start time, refresh, similarity, Start/Stop Monitoring button
+            control_row1 = st.columns([1, 1, 1, 1, 1])
             with control_row1[0]:
                 default_start = datetime.now() - timedelta(hours=1)
                 start_date = st.date_input(
@@ -1218,6 +1218,12 @@ def main():
                     disabled=st.session_state.monitoring_active,
                 )
             with control_row1[3]:
+                show_similarity = st.checkbox(
+                    "Show similarity",
+                    value=False,
+                    key="show_similarity",
+                )
+            with control_row1[4]:
                 if not st.session_state.monitoring_active:
                     start_button = st.button(
                         "Start Monitoring",
@@ -1578,6 +1584,7 @@ def main():
                             speed=current_speed,
                             flow_v_units=plot_flow_units,
                             head_units=plot_head_units,
+                            similarity=show_similarity,
                         )
                         # Add expected point
                         if expected_head > 0:
@@ -1621,6 +1628,7 @@ def main():
                             speed=current_speed,
                             flow_v_units=plot_flow_units,
                             power_units=plot_power_units,
+                            similarity=show_similarity,
                         )
                         # Add expected point
                         if expected_power > 0:
@@ -1664,6 +1672,7 @@ def main():
                         eff_fig = converted_impeller.eff_plot(
                             speed=current_speed,
                             flow_v_units=plot_flow_units,
+                            similarity=show_similarity,
                         )
                         # Add expected point
                         if expected_eff > 0:
@@ -1707,6 +1716,7 @@ def main():
                             speed=current_speed,
                             flow_v_units=plot_flow_units,
                             p_units=plot_p_units,
+                            similarity=show_similarity,
                         )
                         # Add expected point
                         if expected_p_disch > 0:
